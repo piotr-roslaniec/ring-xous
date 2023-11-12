@@ -190,6 +190,7 @@ use self::sysrand_or_urandom::fill as fill_impl;
     target_os = "netbsd",
     target_os = "openbsd",
     target_os = "solaris",
+    target_arch = "riscv32"
 ))]
 use self::urandom::fill as fill_impl;
 
@@ -394,7 +395,8 @@ mod sysrand_or_urandom {
     target_os = "netbsd",
     target_os = "openbsd",
     target_os = "solaris",
-    target_os = "illumos"
+    target_os = "illumos",
+    target_arch="riscv32"
 ))]
 mod urandom {
     use crate::error;
@@ -403,18 +405,23 @@ mod urandom {
     pub fn fill(dest: &mut [u8]) -> Result<(), error::Unspecified> {
         extern crate std;
 
-        use once_cell::sync::Lazy;
+        // use once_cell::sync::Lazy;
+        //
+        // static FILE: Lazy<Result<std::fs::File, std::io::Error>> =
+        //     Lazy::new(|| std::fs::File::open("/dev/urandom"));
 
-        static FILE: Lazy<Result<std::fs::File, std::io::Error>> =
-            Lazy::new(|| std::fs::File::open("/dev/urandom"));
+        // match *FILE {
+        //     Ok(ref file) => {
+        //         use std::io::Read;
+        //         (&*file).read_exact(dest).map_err(|_| error::Unspecified)
+        //     }
+        //     Err(_) => Err(error::Unspecified),
+        // }
 
-        match *FILE {
-            Ok(ref file) => {
-                use std::io::Read;
-                (&*file).read_exact(dest).map_err(|_| error::Unspecified)
-            }
-            Err(_) => Err(error::Unspecified),
-        }
+        // let fake_urandom: Vec<u8> = vec![0, dest.len()];
+        // Ok(&fake_urandom[..])
+
+        Ok(())
     }
 }
 

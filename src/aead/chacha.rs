@@ -181,8 +181,8 @@ impl Key {
         }
     }
 
-    #[inline] // Optimize away match on `counter.`
-    #[cfg(not(target_arch="riscv32"))]
+    // #[inline] // Optimize away match on `counter.`
+    // #[cfg(not(target_arch="riscv32"))]
     unsafe fn encrypt(
         &self,
         counter: CounterOrIv,
@@ -210,7 +210,7 @@ impl Key {
             );
         }
 
-        GFp_ChaCha20_ctr32(output, input, in_out_len, self, &iv);
+        // GFp_ChaCha20_ctr32(output, input, in_out_len, self, &iv);
     }
 
     /// This is "less safe" because it skips the important check that `encrypt_within` does.
